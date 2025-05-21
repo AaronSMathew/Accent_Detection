@@ -70,8 +70,7 @@ st.markdown("""
 This tool analyzes videos to detect and classify English accents for hiring purposes.
 Upload a video URL (YouTube, Loom, Vimeo, or direct MP4 link) to get started.
 """)
-
-# Helper functions
+ 
 @st.cache_resource
 def load_whisper_model():
     """Load Whisper model for transcription"""
@@ -164,14 +163,13 @@ def analyze_accent(transcript, audio_path):
         r'\b(doing the needful|good name|passed out|itself|yaar)\b'
     ]
     
-    # Count pattern matches
+ 
     american_count = sum([len(re.findall(pattern, transcript.lower())) for pattern in american_patterns])
     british_count = sum([len(re.findall(pattern, transcript.lower())) for pattern in british_patterns])
     australian_count = sum([len(re.findall(pattern, transcript.lower())) for pattern in australian_patterns])
     indian_count = sum([len(re.findall(pattern, transcript.lower())) for pattern in indian_patterns])
     
-    # Feature 2: Acoustic features
-    # Extract pitch and rhythm features
+   
     if len(y) > 0:
         tempo, _ = librosa.beat.beat_track(y=y, sr=sr)
         pitch_mean = np.mean(librosa.feature.zero_crossing_rate(y=y))
@@ -206,14 +204,14 @@ def analyze_accent(transcript, audio_path):
         australian_acoustic = 0
         indian_acoustic = 0
     
-    # Combine features
+ 
     american_score = american_count * 2 + american_acoustic
     british_score = british_count * 2 + british_acoustic
     australian_score = australian_count * 2 + australian_acoustic
     indian_score = indian_count * 2 + indian_acoustic
     
-    # Add general english proficiency score
-    # This would be more sophisticated in a real system
+ 
+ 
     scores = {
         "American": american_score,
         "British": british_score, 
@@ -297,7 +295,7 @@ def main():
                 st.error("Failed to analyze accent")
                 return
                 
-            # Step 4: Display results
+        
             st.success("Analysis complete!")
             
             col1, col2 = st.columns(2)
@@ -320,7 +318,7 @@ def main():
                 </div>
                 """, unsafe_allow_html=True)
                 
-                # Additional info for hiring purposes
+     
                 english_proficiency = "High" if confidence > 75 else "Medium" if confidence > 50 else "Low"
                 st.info(f"English Proficiency Assessment: {english_proficiency}")
 
